@@ -267,9 +267,13 @@ function updateIndicator(x, y) {
 
 function clearInds(){document.querySelectorAll('.drop-ind.on').forEach(function(e){e.classList.remove('on');});}
 
-var tid=null,tmov=false,tx=0,ty=0;
+var tid=null,tmov=false,tx=0,ty=0,pendingCol=null,pendingIdx=0;
 function addTouch(grip,id,card){
-  grip.addEventListener('touchstart',function(e){tid=id;tmov=false;tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+  grip.addEventListener('touchstart',function(e){
+    tid=id;tmov=false;
+    tx=e.touches[0].clientX;ty=e.touches[0].clientY;
+    pendingCol=null;pendingIdx=0;
+  },{passive:true});
   grip.addEventListener('touchmove',function(e){
     if(!tid) return;
     var t=e.touches[0];
@@ -277,17 +281,17 @@ function addTouch(grip,id,card){
       tmov=true; e.preventDefault(); dragId=tid;
       card.classList.add('dragging');
       updateIndicator(t.clientX,t.clientY);
+      // Save drop target during move, not on end
+      var ind=document.querySelector('.drop-ind.on');
+      if(ind){ pendingCol=ind.dataset.col; pendingIdx=parseInt(ind.dataset.idx); }
     }
   },{passive:false});
   grip.addEventListener('touchend',function(e){
     card.classList.remove('dragging');
-    if(tmov&&tid!=null){
-      var t=e.changedTouches[0];
-      updateIndicator(t.clientX,t.clientY);
-      var ind=document.querySelector('.drop-ind.on');
-      if(ind) moveNote(tid,ind.dataset.col,parseInt(ind.dataset.idx));
+    if(tmov&&tid!=null&&pendingCol!==null){
+      moveNote(tid,pendingCol,pendingIdx);
     }
-    clearInds(); tid=null; tmov=false; dragId=null;
+    clearInds(); tid=null; tmov=false; dragId=null; pendingCol=null; pendingIdx=0;
   });
   grip.oncontextmenu=function(e){e.preventDefault();return false;};
 }
