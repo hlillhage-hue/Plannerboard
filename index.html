@@ -13,55 +13,33 @@
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 :root { --yellow:#f9e84e; --white-note:#f5f0e0; --board:#2d4a3e; --col:rgba(255,255,255,0.13); }
 body { font-family:'Patrick Hand',cursive; background:var(--board); min-height:100vh; overflow-x:hidden; overflow-y:auto; }
-header {
-  position:sticky; top:0; z-index:100;
-  background:rgba(20,40,30,0.95);
-  border-bottom:1px solid rgba(255,255,255,0.1);
-  display:flex; align-items:center; gap:8px;
-  padding:10px 14px; flex-wrap:wrap;
-}
+header { position:sticky; top:0; z-index:100; background:rgba(20,40,30,0.95); border-bottom:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; gap:8px; padding:10px 14px; flex-wrap:wrap; }
 header h1 { font-family:'Caveat',cursive; font-size:26px; font-weight:700; color:var(--yellow); margin-right:auto; }
-.hbtn {
-  background:transparent; color:rgba(255,255,255,0.75);
-  border:1.5px solid rgba(255,255,255,0.3); border-radius:20px;
-  padding:6px 14px; font-family:'Patrick Hand',cursive; font-size:14px; cursor:pointer;
-}
+.hbtn { background:transparent; color:rgba(255,255,255,0.75); border:1.5px solid rgba(255,255,255,0.3); border-radius:20px; padding:6px 14px; font-family:'Patrick Hand',cursive; font-size:14px; cursor:pointer; }
 .hbtn:active { opacity:0.6; }
-.hbtn.active { background:rgba(249,232,78,0.2); color:var(--yellow); border-color:var(--yellow); }
-#add-btn {
-  background:var(--yellow); color:#1a3028; border:none; border-radius:50%;
-  width:42px; height:42px; font-size:26px; font-weight:bold; cursor:pointer;
-}
+.hbtn.on { background:rgba(249,232,78,0.2); color:var(--yellow); border-color:var(--yellow); }
+#add-btn { background:var(--yellow); color:#1a3028; border:none; border-radius:50%; width:42px; height:42px; font-size:26px; font-weight:bold; cursor:pointer; }
 #board { display:flex; gap:12px; padding:14px 12px 60px; align-items:flex-start; overflow-x:auto; }
 .column { flex:0 0 calc(33.33vw - 14px); min-width:220px; background:var(--col); border-radius:14px; padding:10px 8px 14px; display:flex; flex-direction:column; }
 .col-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; padding:0 4px; }
 .col-title { font-family:'Caveat',cursive; font-size:22px; color:#fff; font-weight:700; }
 .col-count { background:rgba(255,255,255,0.15); color:rgba(255,255,255,0.7); font-size:12px; padding:2px 8px; border-radius:20px; }
 .notes-list { display:flex; flex-direction:column; min-height:60px; }
-.drop-indicator { height:3px; background:var(--yellow); border-radius:3px; margin:2px 4px; display:none; box-shadow:0 0 8px rgba(249,232,78,0.6); }
-.drop-indicator.visible { display:block; }
-.note-wrap { padding:4px 0; }
+.drop-ind { height:3px; background:var(--yellow); border-radius:3px; margin:2px 4px; display:none; box-shadow:0 0 8px rgba(249,232,78,0.6); }
+.drop-ind.on { display:block; }
+.nwrap { padding:4px 0; }
 .note { background:var(--yellow); border-radius:3px 12px 12px 3px; border-left:5px solid rgba(0,0,0,0.12); min-height:70px; position:relative; box-shadow:2px 3px 8px rgba(0,0,0,0.2); word-break:break-word; }
 .note.white { background:var(--white-note); }
 .note.dragging { opacity:0.35; }
-.note.hidden-done { display:none; }
-.note-grip {
-  padding:8px 12px 6px 14px;
-  display:flex; align-items:center; gap:8px;
-  border-bottom:1px solid rgba(0,0,0,0.07);
-  /* Fix #1: block context menu on grip */
-  -webkit-user-select:none; user-select:none;
-  touch-action:none;
-}
-.note-grip-dots { color:rgba(0,0,0,0.3); font-size:16px; letter-spacing:2px; }
-.note-grip-label { font-family:'Patrick Hand',cursive; font-size:11px; color:rgba(0,0,0,0.3); text-transform:uppercase; letter-spacing:1px; }
-.note-body { padding:10px 12px 12px 14px; }
-.note-text { font-family:'Caveat',cursive; font-size:18px; font-weight:600; color:#1a1a1a; line-height:1.3; white-space:pre-wrap; }
-.note-text.done { text-decoration:line-through; opacity:0.5; }
-.app-badge { display:inline-block; margin-top:6px; font-size:11px; color:rgba(0,0,0,0.45); border:1.5px solid rgba(0,0,0,0.25); border-radius:20px; padding:1px 8px; font-family:'Patrick Hand',cursive; font-weight:bold; letter-spacing:1px; }
-.note-actions { position:absolute; top:4px; right:6px; display:flex; gap:3px; }
+.grip { padding:8px 12px 6px 14px; display:flex; align-items:center; gap:8px; border-bottom:1px solid rgba(0,0,0,0.07); -webkit-user-select:none; user-select:none; touch-action:none; cursor:grab; }
+.grip-dots { color:rgba(0,0,0,0.3); font-size:16px; letter-spacing:2px; }
+.grip-lbl { font-family:'Patrick Hand',cursive; font-size:11px; color:rgba(0,0,0,0.3); text-transform:uppercase; letter-spacing:1px; }
+.nbody { padding:10px 12px 12px 14px; }
+.ntxt { font-family:'Caveat',cursive; font-size:18px; font-weight:600; color:#1a1a1a; line-height:1.3; white-space:pre-wrap; }
+.ntxt.done { text-decoration:line-through; opacity:0.5; }
+.badge { display:inline-block; margin-top:6px; font-size:11px; color:rgba(0,0,0,0.45); border:1.5px solid rgba(0,0,0,0.25); border-radius:20px; padding:1px 8px; font-family:'Patrick Hand',cursive; font-weight:bold; letter-spacing:1px; }
+.nacts { position:absolute; top:4px; right:6px; display:flex; gap:3px; }
 .nbtn { background:rgba(0,0,0,0.08); border:none; border-radius:50%; width:26px; height:26px; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:rgba(0,0,0,0.55); }
-.nbtn.del:active { background:#e53935; color:#fff; }
 #overlay { display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; }
 #overlay.open { display:flex; }
 #modal { background:var(--yellow); border-radius:4px 18px 18px 4px; border-left:7px solid rgba(0,0,0,0.15); padding:22px; width:min(88vw,400px); animation:pop 0.18s ease; }
@@ -72,366 +50,304 @@ header h1 { font-family:'Caveat',cursive; font-size:26px; font-weight:700; color
 .mrow label { font-size:13px; color:rgba(0,0,0,0.6); display:flex; align-items:center; gap:5px; }
 .mrow select { padding:5px 8px; border-radius:7px; border:2px solid rgba(0,0,0,0.15); background:rgba(255,255,255,0.5); font-family:'Patrick Hand',cursive; font-size:14px; }
 .mbtns { display:flex; gap:10px; margin-top:14px; justify-content:flex-end; }
-.btn-cancel { padding:9px 18px; border-radius:9px; border:2px solid rgba(0,0,0,0.2); background:transparent; font-family:'Patrick Hand',cursive; font-size:14px; cursor:pointer; }
-.btn-save { padding:9px 22px; border-radius:9px; background:#1a3028; color:var(--yellow); border:none; font-family:'Caveat',cursive; font-size:18px; font-weight:700; cursor:pointer; }
-#import-file { display:none; }
+.btn-c { padding:9px 18px; border-radius:9px; border:2px solid rgba(0,0,0,0.2); background:transparent; font-family:'Patrick Hand',cursive; font-size:14px; cursor:pointer; }
+.btn-s { padding:9px 22px; border-radius:9px; background:#1a3028; color:var(--yellow); border:none; font-family:'Caveat',cursive; font-size:18px; font-weight:700; cursor:pointer; }
+#imp { display:none; }
 </style>
 </head>
 <body>
 <header>
   <h1>📌 Henrik's Board</h1>
-  <button class="hbtn" id="filter-btn" onclick="toggleFilter()">👁 Visa klara</button>
-  <button class="hbtn" onclick="exportNotes()">💾 Exportera</button>
-  <input type="file" id="import-file" accept=".json" onchange="importNotes(event)">
-  <button class="hbtn" onclick="document.getElementById('import-file').click()">📂 Importera</button>
+  <button class="hbtn" id="fbtn" onclick="toggleFilter()">👁 Visa klara</button>
+  <button class="hbtn" id="rstbtn" onclick="forceReset()" style="border-color:rgba(255,100,100,0.5);color:rgba(255,150,150,0.9)">↺ Nollställ</button><button class="hbtn" onclick="doExport()">💾 Exportera</button>
+  <input type="file" id="imp" accept=".json" onchange="doImport(event)">
+  <button class="hbtn" onclick="document.getElementById('imp').click()">📂 Importera</button>
   <button class="hbtn" onclick="newDay()">🌅 Ny dag</button>
-  <button id="add-btn" onclick="openModal()">+</button>
+  <button id="add-btn" onclick="openModal(null)">+</button>
 </header>
-
 <div id="board">
-  <div class="column" data-col="idag">
-    <div class="col-header"><span class="col-title">☀️ I dag</span><span class="col-count" id="count-idag">0</span></div>
-    <div class="notes-list" id="list-idag"></div>
+  <div class="column">
+    <div class="col-header"><span class="col-title">☀️ I dag</span><span class="col-count" id="cnt-idag">0</span></div>
+    <div class="notes-list" id="lst-idag"></div>
   </div>
-  <div class="column" data-col="imorgon">
-    <div class="col-header"><span class="col-title">🌤 I morgon</span><span class="col-count" id="count-imorgon">0</span></div>
-    <div class="notes-list" id="list-imorgon"></div>
+  <div class="column">
+    <div class="col-header"><span class="col-title">🌤 I morgon</span><span class="col-count" id="cnt-imorgon">0</span></div>
+    <div class="notes-list" id="lst-imorgon"></div>
   </div>
-  <div class="column" data-col="senare">
-    <div class="col-header"><span class="col-title">🌙 Senare</span><span class="col-count" id="count-senare">0</span></div>
-    <div class="notes-list" id="list-senare"></div>
+  <div class="column">
+    <div class="col-header"><span class="col-title">🌙 Senare</span><span class="col-count" id="cnt-senare">0</span></div>
+    <div class="notes-list" id="lst-senare"></div>
   </div>
 </div>
-
 <div id="overlay">
   <div id="modal">
-    <h2 id="modal-title">Ny lapp</h2>
-    <textarea id="note-text" placeholder="Skriv din anteckning..."></textarea>
+    <h2 id="mtitle">Ny lapp</h2>
+    <textarea id="mtxt" placeholder="Skriv..."></textarea>
     <div class="mrow">
-      <label>Kolumn: <select id="col-sel"><option value="idag">I dag</option><option value="imorgon">I morgon</option><option value="senare">Senare</option></select></label>
-      <label><input type="checkbox" id="is-app"> APP</label>
-      <label><input type="checkbox" id="is-done"> Klar</label>
-      <label><input type="checkbox" id="is-white"> Vit</label>
+      <label>Kolumn:<select id="mcol"><option value="idag">I dag</option><option value="imorgon">I morgon</option><option value="senare">Senare</option></select></label>
+      <label><input type="checkbox" id="mapp"> APP</label>
+      <label><input type="checkbox" id="mdone"> Klar</label>
+      <label><input type="checkbox" id="mwhite"> Vit</label>
     </div>
     <div class="mbtns">
-      <button class="btn-cancel" onclick="closeModal()">Avbryt</button>
-      <button class="btn-save" onclick="saveModal()">Spara</button>
+      <button class="btn-c" onclick="closeModal()">Avbryt</button>
+      <button class="btn-s" onclick="saveModal()">Spara</button>
     </div>
   </div>
 </div>
-
 <script>
-var INIT = [
-  {id:3,col:"idag",text:"Träning
--cykla
--orientering
--styrka",app:false,done:false,white:false},
-  {id:1,col:"idag",text:"Sök Jobb",app:false,done:false,white:false},
-  {id:2,col:"idag",text:"Gör Alva Labs",app:false,done:true,white:true},
-  {id:10,col:"idag",text:"Hundkollen",app:true,done:false,white:false},
-  {id:4,col:"idag",text:"Hundpatrullen
--publicera",app:true,done:false,white:false},
-  {id:5,col:"idag",text:"Jobbsökverktyg
--förbättra",app:true,done:false,white:false},
-  {id:11,col:"senare",text:"Projektassist",app:true,done:false,white:false},
-  {id:13,col:"senare",text:"Elerspänning",app:true,done:true,white:false},
-  {id:6,col:"senare",text:"Intervju",app:true,done:false,white:false},
-  {id:7,col:"senare",text:"Cykelfix
-Claude web",app:true,done:false,white:false},
-  {id:1779444152377,col:"senare",text:"Plannerboard",app:true,done:false,white:false},
-  {id:12,col:"senare",text:"Erfarenhet
-(dela kunskap)",app:false,done:false,white:false},
-  {id:9,col:"senare",text:"Video Portalen",app:false,done:false,white:false},
-  {id:8,col:"senare",text:"Inlägg
-Minska konsultdag med 80%",app:false,done:false,white:false},
-  {id:14,col:"senare",text:"Kunskapträning",app:false,done:false,white:false},
-  {id:15,col:"senare",text:"Egen Verksamhet",app:false,done:false,white:false}
+var NOTES = [
+  {id:1, col:"idag",    text:"Träning\n-cykla\n-orientering\n-styrka", app:false, done:false, white:false},
+  {id:2, col:"idag",    text:"Sök Jobb",                               app:false, done:false, white:false},
+  {id:3, col:"idag",    text:"Gör Alva Labs",                          app:false, done:true,  white:true},
+  {id:4, col:"idag",    text:"Hundkollen",                             app:true,  done:false, white:false},
+  {id:5, col:"idag",    text:"Hundpatrullen\n-publicera",              app:true,  done:false, white:false},
+  {id:6, col:"idag",    text:"Jobbsökverktyg\n-förbättra",            app:true,  done:false, white:false},
+  {id:7, col:"senare",  text:"Projektassist",                          app:true,  done:false, white:false},
+  {id:8, col:"senare",  text:"Elerspänning",                           app:true,  done:true,  white:false},
+  {id:9, col:"senare",  text:"Intervju",                               app:true,  done:false, white:false},
+  {id:10,col:"senare",  text:"Cykelfix\nClaude web",                   app:true,  done:false, white:false},
+  {id:11,col:"senare",  text:"Plannerboard",                           app:true,  done:false, white:false},
+  {id:12,col:"senare",  text:"Erfarenhet\n(dela kunskap)",             app:false, done:false, white:false},
+  {id:13,col:"senare",  text:"Video Portalen",                         app:false, done:false, white:false},
+  {id:14,col:"senare",  text:"Inlägg\nMinska konsultdag med 80%",     app:false, done:false, white:false},
+  {id:15,col:"senare",  text:"Kunskapträning",                         app:false, done:false, white:false},
+  {id:16,col:"senare",  text:"Egen Verksamhet",                        app:false, done:false, white:false}
 ];
 
 var notes = [];
 var editId = null;
 var dragId = null;
-var showDone = false; // Fix #3: filter state
+var showDone = false;
 
-// ── Service Worker ────────────────────────────────────────────────────────
 if ("serviceWorker" in navigator) { navigator.serviceWorker.register("./sw.js"); }
 
-// ── Filter #3 ─────────────────────────────────────────────────────────────
-function toggleFilter() {
-  showDone = !showDone;
-  var btn = document.getElementById("filter-btn");
-  btn.textContent = showDone ? "🙈 Dölj klara" : "👁 Visa klara";
-  btn.classList.toggle("active", showDone);
-  applyFilter();
-}
-function applyFilter() {
-  document.querySelectorAll(".note").forEach(function(el) {
-    var id = parseInt(el.dataset.id) || Number(el.dataset.id);
-    var n = notes.find(function(x){ return x.id == el.dataset.id; });
-    if (n && n.done && !showDone) {
-      el.closest(".note-wrap").style.display = "none";
-    } else {
-      el.closest(".note-wrap").style.display = "";
-    }
-  });
-}
-
-// ── Persistence ────────────────────────────────────────────────────────────
 function save() {
-  try { var enc = btoa(encodeURIComponent(JSON.stringify(notes))); history.replaceState(null,null,'#'+enc); } catch(e){}
-  try { localStorage.setItem("postit", JSON.stringify(notes)); } catch(e){}
+  try { localStorage.setItem("pnotes", JSON.stringify(notes)); } catch(e){}
+  try { history.replaceState(null,null,"#"+btoa(encodeURIComponent(JSON.stringify(notes)))); } catch(e){}
 }
 function load() {
-  try { var h=window.location.hash.slice(1); if(h){var p=JSON.parse(decodeURIComponent(atob(h))); if(Array.isArray(p)&&p.length>0){notes=p;return true;}} } catch(e){}
-  try { var s=localStorage.getItem("postit"); if(s){var p=JSON.parse(s); if(Array.isArray(p)&&p.length>0){notes=p;return true;}} } catch(e){}
+  try { var s=localStorage.getItem("pnotes"); if(s){var p=JSON.parse(s);if(Array.isArray(p)&&p.length>0){notes=p;return true;}} } catch(e){}
+  try { var h=location.hash.slice(1); if(h){var p=JSON.parse(decodeURIComponent(atob(h)));if(Array.isArray(p)&&p.length){notes=p;return true;}} } catch(e){}
   return false;
 }
 
-// ── Render ─────────────────────────────────────────────────────────────────
+function forceReset(){
+  localStorage.removeItem("pnotes");
+  notes=JSON.parse(JSON.stringify(NOTES));
+  render();
+  document.getElementById("rstbtn").textContent="✓ Klar";
+}
+function toggleFilter() {
+  showDone = !showDone;
+  var b = document.getElementById("fbtn");
+  b.textContent = showDone ? "🙈 Dölj klara" : "👁 Visa klara";
+  b.classList.toggle("on", showDone);
+  applyFilter();
+}
+function applyFilter() {
+  document.querySelectorAll(".nwrap").forEach(function(w) {
+    var nid = w.dataset.nid;
+    var n = notes.find(function(x){return String(x.id)===nid;});
+    w.style.display = (n && n.done && !showDone) ? "none" : "";
+  });
+}
+
 function render() {
   save();
   ["idag","imorgon","senare"].forEach(function(col) {
-    var list = document.getElementById("list-"+col);
-    var count = document.getElementById("count-"+col);
-    var colNotes = notes.filter(function(n){ return n.col===col; });
-    count.textContent = colNotes.length;
-    list.innerHTML = "";
-    list.appendChild(makeIndicator(col, 0));
-    colNotes.forEach(function(n, i) {
-      list.appendChild(makeCard(n));
-      list.appendChild(makeIndicator(col, i+1));
+    var lst = document.getElementById("lst-"+col);
+    var cnt = document.getElementById("cnt-"+col);
+    var cn = notes.filter(function(n){return n.col===col;});
+    cnt.textContent = cn.length;
+    lst.innerHTML = "";
+    lst.appendChild(mkInd(col,0));
+    cn.forEach(function(n,i){
+      lst.appendChild(mkCard(n));
+      lst.appendChild(mkInd(col,i+1));
     });
   });
   applyFilter();
 }
 
-function makeIndicator(col, index) {
-  var div = document.createElement("div");
-  div.className = "drop-indicator";
-  div.dataset.col = col; div.dataset.index = index;
-  return div;
+function mkInd(col,idx) {
+  var d = document.createElement("div");
+  d.className = "drop-ind";
+  d.dataset.col = col;
+  d.dataset.idx = idx;
+  return d;
 }
 
-function makeCard(n) {
+function mkCard(n) {
   var wrap = document.createElement("div");
-  wrap.className = "note-wrap";
-  var div = document.createElement("div");
-  div.className = "note" + (n.white?" white":"");
-  div.dataset.id = n.id;
+  wrap.className = "nwrap";
+  wrap.dataset.nid = String(n.id);
 
-  // Grip — Fix #1: block context menu
+  var card = document.createElement("div");
+  card.className = "note" + (n.white?" white":"");
+  card.dataset.id = String(n.id);
+
   var grip = document.createElement("div");
-  grip.className = "note-grip";
-  grip.innerHTML = '<span class="note-grip-dots">⠿⠿⠿</span><span class="note-grip-label">dra</span>';
-  grip.addEventListener("contextmenu", function(e){ e.preventDefault(); return false; });
-  grip.addEventListener("touchstart", function(e){ e.stopPropagation(); }, {passive:true});
+  grip.className = "grip";
+  grip.innerHTML = '<span class="grip-dots">&#10783;&#10783;&#10783;</span><span class="grip-lbl">dra</span>';
+  grip.oncontextmenu = function(e){e.preventDefault();return false;};
 
-  var actions = document.createElement("div");
-  actions.className = "note-actions";
-  var editBtn = document.createElement("button"); editBtn.className="nbtn"; editBtn.textContent="✏️";
-  editBtn.onclick = function(e){ e.stopPropagation(); openEdit(n.id); };
-  var doneBtn = document.createElement("button"); doneBtn.className="nbtn"; doneBtn.textContent=n.done?"↩️":"✔️";
-  doneBtn.onclick = function(e){ e.stopPropagation(); toggleDone(n.id); };
-  var delBtn = document.createElement("button"); delBtn.className="nbtn del"; delBtn.textContent="🗑";
-  delBtn.onclick = function(e){ e.stopPropagation(); deleteNote(n.id); };
-  actions.appendChild(editBtn); actions.appendChild(doneBtn); actions.appendChild(delBtn);
+  var acts = document.createElement("div");
+  acts.className = "nacts";
 
-  var body = document.createElement("div"); body.className="note-body";
-  var txt = document.createElement("div"); txt.className="note-text"+(n.done?" done":""); txt.textContent=n.text;
+  var eb = document.createElement("button"); eb.className="nbtn"; eb.textContent="✏️";
+  eb.onclick = function(e){e.stopPropagation();openModal(n.id);};
+  var db = document.createElement("button"); db.className="nbtn"; db.textContent=n.done?"↩️":"✔️";
+  db.onclick = function(e){e.stopPropagation();toggleDone(n.id);};
+  var xb = document.createElement("button"); xb.className="nbtn"; xb.textContent="🗑";
+  xb.onclick = function(e){e.stopPropagation();delNote(n.id);};
+  acts.appendChild(eb); acts.appendChild(db); acts.appendChild(xb);
+
+  var body = document.createElement("div"); body.className="nbody";
+  var txt = document.createElement("div"); txt.className="ntxt"+(n.done?" done":""); txt.textContent=n.text;
   body.appendChild(txt);
-  if (n.app) { var badge=document.createElement("div"); badge.className="app-badge"; badge.textContent="● APP"; body.appendChild(badge); }
+  if(n.app){var b=document.createElement("div");b.className="badge";b.textContent="● APP";body.appendChild(b);}
 
-  div.appendChild(grip); div.appendChild(actions); div.appendChild(body);
+  card.appendChild(grip); card.appendChild(acts); card.appendChild(body);
 
-  // Desktop drag from grip
   grip.draggable = true;
-  grip.addEventListener("dragstart", function(e) {
-    dragId = n.id;
-    setTimeout(function(){ div.classList.add("dragging"); }, 0);
-  });
-  grip.addEventListener("dragend", function() {
-    div.classList.remove("dragging"); clearIndicators();
-  });
+  grip.addEventListener("dragstart",function(){dragId=n.id;setTimeout(function(){card.classList.add("dragging");},0);});
+  grip.addEventListener("dragend",function(){card.classList.remove("dragging");clearInds();});
+  addTouch(grip,n.id,card);
 
-  addTouch(grip, n.id, div);
-  wrap.appendChild(div);
+  wrap.appendChild(card);
   return wrap;
 }
 
-// ── Desktop drag ───────────────────────────────────────────────────────────
-document.addEventListener("dragover", function(e) {
-  e.preventDefault(); clearIndicators();
-  var ind = getIndicatorAtPoint(e.clientX, e.clientY);
-  if (ind) ind.classList.add("visible");
+document.addEventListener("dragover",function(e){
+  e.preventDefault(); clearInds();
+  var ind=bestInd(e.clientX,e.clientY);
+  if(ind) ind.classList.add("on");
 });
-document.addEventListener("drop", function(e) {
+document.addEventListener("drop",function(e){
   e.preventDefault();
-  var ind = document.querySelector(".drop-indicator.visible");
-  if (!ind) ind = getIndicatorAtPoint(e.clientX, e.clientY);
-  if (ind && dragId !== null) moveNote(dragId, ind.dataset.col, parseInt(ind.dataset.index));
-  clearIndicators(); dragId = null;
+  var ind=document.querySelector(".drop-ind.on")||bestInd(e.clientX,e.clientY);
+  if(ind&&dragId!=null) moveNote(dragId,ind.dataset.col,parseInt(ind.dataset.idx));
+  clearInds(); dragId=null;
 });
 
-    }
+function bestInd(x,y) {
+  var best=null,bd=999999,tgt=null;
+  document.querySelectorAll(".notes-list").forEach(function(l){
+    var r=l.getBoundingClientRect();
+    if(x>=r.left&&x<=r.right) tgt=l;
   });
-  return best;
-}
-function clearIndicators() {
-  document.querySelectorAll(".drop-indicator.visible").forEach(function(el){ el.classList.remove("visible"); });
-}
-
-// ── Touch drag ────────────────────────────────────────────────────────────
-var touchId=null, touchMoved=false, tx0=0, ty0=0;
-
-function addTouch(grip, id, card) {
-  grip.addEventListener("touchstart", function(e) {
-    touchId=id; touchMoved=false;
-    tx0=e.touches[0].clientX; ty0=e.touches[0].clientY;
-  }, {passive:true});
-
-  grip.addEventListener("touchmove", function(e) {
-    if (!touchId) return;
-    var t = e.touches[0];
-    var dx=Math.abs(t.clientX-tx0), dy=Math.abs(t.clientY-ty0);
-    if (dx>5 || dy>5) {
-      touchMoved=true;
-      e.preventDefault();
-      card.classList.add("dragging");
-      clearIndicators();
-      var ind = getIndicatorAtPoint(t.clientX, t.clientY);
-      if (ind) ind.classList.add("visible");
-    }
-  }, {passive:false});
-
-  grip.addEventListener("touchend", function(e) {
-    card.classList.remove("dragging");
-    if (touchMoved && touchId!==null) {
-      var t = e.changedTouches[0];
-      // Re-find indicator at release point (most accurate)
-      var ind = getIndicatorAtPoint(t.clientX, t.clientY);
-      if (!ind) ind = document.querySelector(".drop-indicator.visible");
-      if (ind) moveNote(touchId, ind.dataset.col, parseInt(ind.dataset.index));
-    }
-    clearIndicators();
-    touchId=null; touchMoved=false;
-  });
-
-  grip.addEventListener("contextmenu", function(e){ e.preventDefault(); return false; });
-}
-
-// Find indicator by scanning all indicators and picking closest in Y within the hovered column
-function getIndicatorAtPoint(x, y) {
-  var best = null, bestDist = 999999;
-  // First find which column we're in
-  var targetCol = null;
-  document.querySelectorAll(".notes-list").forEach(function(list) {
-    var r = list.getBoundingClientRect();
-    if (x >= r.left && x <= r.right) targetCol = list;
-  });
-  if (!targetCol) {
-    // If not inside any column, find closest column by X
-    var closestCol = null, closestX = 999999;
-    document.querySelectorAll(".notes-list").forEach(function(list) {
-      var r = list.getBoundingClientRect();
-      var mid = (r.left + r.right) / 2;
-      if (Math.abs(x - mid) < closestX) { closestX = Math.abs(x - mid); closestCol = list; }
+  if(!tgt){
+    var bx=999999;
+    document.querySelectorAll(".notes-list").forEach(function(l){
+      var r=l.getBoundingClientRect(),mx=(r.left+r.right)/2;
+      if(Math.abs(x-mx)<bx){bx=Math.abs(x-mx);tgt=l;}
     });
-    targetCol = closestCol;
   }
-  if (!targetCol) return null;
-  targetCol.querySelectorAll(".drop-indicator").forEach(function(el) {
-    var r = el.getBoundingClientRect();
-    var midY = r.top + r.height / 2;
-    var dist = Math.abs(y - midY);
-    if (dist < bestDist) { bestDist = dist; best = el; }
+  if(!tgt) return null;
+  tgt.querySelectorAll(".drop-ind").forEach(function(el){
+    var r=el.getBoundingClientRect(),d=Math.abs(y-(r.top+r.height/2));
+    if(d<bd){bd=d;best=el;}
   });
   return best;
 }
+function clearInds(){document.querySelectorAll(".drop-ind.on").forEach(function(e){e.classList.remove("on");});}
 
-function moveNote(id, col, toIndex) {
-  var n=notes.find(function(x){ return x.id==id; });
-  if (!n) return;
-  notes=notes.filter(function(x){ return x.id!=id; });
+var tid=null,tmov=false,tx=0,ty=0;
+function addTouch(grip,id,card){
+  grip.addEventListener("touchstart",function(e){tid=id;tmov=false;tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+  grip.addEventListener("touchmove",function(e){
+    if(!tid) return;
+    var t=e.touches[0];
+    if(Math.abs(t.clientX-tx)>5||Math.abs(t.clientY-ty)>5){
+      tmov=true; e.preventDefault(); dragId=tid;
+      card.classList.add("dragging");
+      clearInds();
+      var ind=bestInd(t.clientX,t.clientY);
+      if(ind) ind.classList.add("on");
+    }
+  },{passive:false});
+  grip.addEventListener("touchend",function(e){
+    card.classList.remove("dragging");
+    if(tmov&&tid!=null){
+      var t=e.changedTouches[0];
+      var ind=bestInd(t.clientX,t.clientY)||document.querySelector(".drop-ind.on");
+      if(ind) moveNote(tid,ind.dataset.col,parseInt(ind.dataset.idx));
+    }
+    clearInds(); tid=null; tmov=false; dragId=null;
+  });
+  grip.oncontextmenu=function(e){e.preventDefault();return false;};
+}
+
+function moveNote(id,col,toIdx){
+  var n=notes.find(function(x){return x.id==id;});
+  if(!n) return;
+  notes=notes.filter(function(x){return x.id!=id;});
   n.col=col;
-  var byCol={idag:[],imorgon:[],senare:[]};
-  notes.forEach(function(x){ byCol[x.col].push(x); });
-  byCol[col].splice(toIndex, 0, n);
-  notes=[].concat(byCol.idag, byCol.imorgon, byCol.senare);
+  var bc={idag:[],imorgon:[],senare:[]};
+  notes.forEach(function(x){bc[x.col].push(x);});
+  bc[col].splice(toIdx,0,n);
+  notes=bc.idag.concat(bc.imorgon,bc.senare);
   render();
 }
 
-// ── CRUD ──────────────────────────────────────────────────────────────────
-function toggleDone(id) {
-  var n=notes.find(function(x){ return x.id==id; });
-  if(n){ n.done=!n.done; render(); }
+function toggleDone(id){var n=notes.find(function(x){return x.id==id;});if(n){n.done=!n.done;render();}}
+function delNote(id){if(!confirm("Ta bort?"))return;notes=notes.filter(function(x){return x.id!=id;});render();}
+function newDay(){
+  var c=notes.filter(function(n){return n.col==="imorgon";}).length;
+  if(!c){alert("Inga lappar i I morgon!");return;}
+  if(!confirm("Flytta "+c+" lappar till I dag?"))return;
+  notes.forEach(function(n){if(n.col==="imorgon")n.col="idag";});render();
 }
-function deleteNote(id) {
-  if(!confirm("Ta bort lappen?")) return;
-  notes=notes.filter(function(x){ return x.id!=id; }); render();
+function doExport(){
+  var b=new Blob([JSON.stringify(notes,null,2)],{type:"application/json"});
+  var u=URL.createObjectURL(b);var a=document.createElement("a");
+  a.href=u;a.download="henrik-lappar.json";a.click();URL.revokeObjectURL(u);
 }
-function newDay() {
-  var c=notes.filter(function(n){ return n.col==="imorgon"; }).length;
-  if(c===0){alert("Inga lappar i I morgon!");return;}
-  if(!confirm("Flytta "+c+" lapp(ar) till I dag?"))return;
-  notes.forEach(function(n){ if(n.col==="imorgon") n.col="idag"; }); render();
-}
-function exportNotes() {
-  var blob=new Blob([JSON.stringify(notes,null,2)],{type:"application/json"});
-  var url=URL.createObjectURL(blob); var a=document.createElement("a");
-  a.href=url; a.download="henrik-lappar.json"; a.click(); URL.revokeObjectURL(url);
-}
-function importNotes(e) {
-  var file=e.target.files[0]; if(!file) return;
-  var reader=new FileReader();
-  reader.onload=function(ev){
-    try{ var d=JSON.parse(ev.target.result); if(!Array.isArray(d)) throw 0;
-      if(!confirm("Importera "+d.length+" lappar?")) return;
-      notes=d; render();
-    } catch(err){ alert("Ogiltig fil."); }
+function doImport(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    try{var d=JSON.parse(ev.target.result);if(!Array.isArray(d))throw 0;
+      if(!confirm("Importera "+d.length+" lappar?"))return;
+      notes=d;render();
+    }catch(err){alert("Ogiltig fil.");}
     e.target.value="";
   };
-  reader.readAsText(file);
+  r.readAsText(f);
 }
 
-// ── Modal ──────────────────────────────────────────────────────────────────
-function openModal() {
-  editId=null;
-  document.getElementById("modal-title").textContent="Ny lapp";
-  document.getElementById("note-text").value="";
-  document.getElementById("col-sel").value="idag";
-  document.getElementById("is-app").checked=false;
-  document.getElementById("is-done").checked=false;
-  document.getElementById("is-white").checked=false;
+function openModal(id){
+  editId=id||null;
+  var n=id?notes.find(function(x){return x.id==id;}):null;
+  document.getElementById("mtitle").textContent=n?"Redigera lapp":"Ny lapp";
+  document.getElementById("mtxt").value=n?n.text:"";
+  document.getElementById("mcol").value=n?n.col:"idag";
+  document.getElementById("mapp").checked=n?n.app:false;
+  document.getElementById("mdone").checked=n?n.done:false;
+  document.getElementById("mwhite").checked=n?n.white:false;
   document.getElementById("overlay").classList.add("open");
-  setTimeout(function(){ document.getElementById("note-text").focus(); },100);
+  setTimeout(function(){document.getElementById("mtxt").focus();},100);
 }
-function openEdit(id) {
-  var n=notes.find(function(x){ return x.id==id; }); if(!n) return;
-  editId=id;
-  document.getElementById("modal-title").textContent="Redigera lapp";
-  document.getElementById("note-text").value=n.text;
-  document.getElementById("col-sel").value=n.col;
-  document.getElementById("is-app").checked=n.app;
-  document.getElementById("is-done").checked=n.done;
-  document.getElementById("is-white").checked=n.white;
-  document.getElementById("overlay").classList.add("open");
-}
-function closeModal() { document.getElementById("overlay").classList.remove("open"); editId=null; }
-function saveModal() {
-  var text=document.getElementById("note-text").value.trim();
-  if(!text){ document.getElementById("note-text").focus(); return; }
-  if(editId) {
-    var n=notes.find(function(x){ return x.id==editId; });
-    if(n){ n.text=text; n.col=document.getElementById("col-sel").value; n.app=document.getElementById("is-app").checked; n.done=document.getElementById("is-done").checked; n.white=document.getElementById("is-white").checked; }
+function closeModal(){document.getElementById("overlay").classList.remove("open");editId=null;}
+function saveModal(){
+  var txt=document.getElementById("mtxt").value.trim();
+  if(!txt){document.getElementById("mtxt").focus();return;}
+  var col=document.getElementById("mcol").value;
+  var app=document.getElementById("mapp").checked;
+  var done=document.getElementById("mdone").checked;
+  var white=document.getElementById("mwhite").checked;
+  if(editId){
+    var n=notes.find(function(x){return x.id==editId;});
+    if(n){n.text=txt;n.col=col;n.app=app;n.done=done;n.white=white;}
   } else {
-    notes.push({id:Date.now(), col:document.getElementById("col-sel").value, text:text, app:document.getElementById("is-app").checked, done:document.getElementById("is-done").checked, white:document.getElementById("is-white").checked});
+    notes.push({id:Date.now(),col:col,text:txt,app:app,done:done,white:white});
   }
-  render(); closeModal();
+  render();closeModal();
 }
-document.getElementById("overlay").onclick=function(e){ if(e.target===this) closeModal(); };
+document.getElementById("overlay").onclick=function(e){if(e.target===this)closeModal();};
 
-// ── Init ───────────────────────────────────────────────────────────────────
-if (!load()) { notes=JSON.parse(JSON.stringify(INIT)); }
+if(!load()){notes=JSON.parse(JSON.stringify(NOTES));}
 render();
 </script>
 </body>
