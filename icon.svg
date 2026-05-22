@@ -1,10 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" rx="80" fill="#2d4a3e"/>
-  <rect x="80" y="80" width="260" height="300" rx="12" fill="#f9e84e"/>
-  <rect x="80" y="80" width="20" height="300" rx="6" fill="#e0c800"/>
-  <rect x="110" y="130" width="180" height="16" rx="6" fill="#1a1a1a" opacity="0.4"/>
-  <rect x="110" y="165" width="140" height="16" rx="6" fill="#1a1a1a" opacity="0.4"/>
-  <rect x="110" y="200" width="160" height="16" rx="6" fill="#1a1a1a" opacity="0.4"/>
-  <circle cx="380" cy="160" r="60" fill="#c0392b"/>
-  <rect x="374" y="160" width="12" height="160" rx="6" fill="#7f8c8d"/>
+  <!-- Post-it lapp -->
+  <rect x="96" y="96" width="320" height="320" rx="12" fill="#f9e84e"/>
+  <!-- Vikad hörna -->
+  <polygon points="416,256 416,416 256,416" fill="#e0c800"/>
+  <!-- Linjer på lappen -->
+  <rect x="136" y="160" width="200" height="14" rx="7" fill="rgba(0,0,0,0.2)"/>
+  <rect x="136" y="196" width="160" height="14" rx="7" fill="rgba(0,0,0,0.2)"/>
+  <rect x="136" y="232" width="180" height="14" rx="7" fill="rgba(0,0,0,0.2)"/>
 </svg>
