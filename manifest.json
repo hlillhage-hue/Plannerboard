@@ -1,0 +1,18 @@
+{
+  "name": "Henrik's Post-it Board",
+  "short_name": "Post-it",
+  "description": "Henriks digitala post-it board",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#2d4a3e",
+  "theme_color": "#2d4a3e",
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
