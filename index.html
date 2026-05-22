@@ -219,136 +219,78 @@ function mkCard(n) {
   return wrap;
 }
 
-document.addEventListener("dragover",function(e){
-  e.preventDefault(); clearInds();
-  var ind=bestInd(e.clientX,e.clientY);
-  if(ind) ind.classList.add("on");
-});
-document.addEventListener("drop",function(e){
+
+document.addEventListener('dragover',function(e){
   e.preventDefault();
-  var ind=document.querySelector(".drop-ind.on")||bestInd(e.clientX,e.clientY);
+  updateIndicator(e.clientX, e.clientY);
+});
+document.addEventListener('drop',function(e){
+  e.preventDefault();
+  var ind=document.querySelector('.drop-ind.on');
   if(ind&&dragId!=null) moveNote(dragId,ind.dataset.col,parseInt(ind.dataset.idx));
   clearInds(); dragId=null;
 });
 
-function bestInd(x,y) {
-  var best=null,bd=999999,tgt=null;
-  document.querySelectorAll(".notes-list").forEach(function(l){
+function updateIndicator(x, y) {
+  clearInds();
+  // Find which column
+  var tgtList = null;
+  document.querySelectorAll('.notes-list').forEach(function(l){
     var r=l.getBoundingClientRect();
-    if(x>=r.left&&x<=r.right) tgt=l;
+    if(x>=r.left&&x<=r.right) tgtList=l;
   });
-  if(!tgt){
-    var bx=999999;
-    document.querySelectorAll(".notes-list").forEach(function(l){
-      var r=l.getBoundingClientRect(),mx=(r.left+r.right)/2;
-      if(Math.abs(x-mx)<bx){bx=Math.abs(x-mx);tgt=l;}
+  if(!tgtList){
+    // closest column
+    var best=null,bd=999999;
+    document.querySelectorAll('.notes-list').forEach(function(l){
+      var r=l.getBoundingClientRect(),mid=(r.left+r.right)/2,d=Math.abs(x-mid);
+      if(d<bd){bd=d;best=l;}
     });
+    tgtList=best;
   }
-  if(!tgt) return null;
-  tgt.querySelectorAll(".drop-ind").forEach(function(el){
-    var r=el.getBoundingClientRect(),d=Math.abs(y-(r.top+r.height/2));
-    if(d<bd){bd=d;best=el;}
+  if(!tgtList) return;
+
+  // Find insert position by comparing y to card midpoints
+  var col=tgtList.id.replace('lst-','');
+  var cards=tgtList.querySelectorAll('.nwrap');
+  var insertIdx=0;
+  cards.forEach(function(card,i){
+    var r=card.getBoundingClientRect();
+    var mid=r.top+r.height/2;
+    if(y>mid) insertIdx=i+1;
   });
-  return best;
+
+  // Highlight the correct indicator
+  var inds=tgtList.querySelectorAll('.drop-ind');
+  if(inds[insertIdx]) inds[insertIdx].classList.add('on');
 }
-function clearInds(){document.querySelectorAll(".drop-ind.on").forEach(function(e){e.classList.remove("on");});}
+
+function clearInds(){document.querySelectorAll('.drop-ind.on').forEach(function(e){e.classList.remove('on');});}
 
 var tid=null,tmov=false,tx=0,ty=0;
 function addTouch(grip,id,card){
-  grip.addEventListener("touchstart",function(e){tid=id;tmov=false;tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
-  grip.addEventListener("touchmove",function(e){
+  grip.addEventListener('touchstart',function(e){tid=id;tmov=false;tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+  grip.addEventListener('touchmove',function(e){
     if(!tid) return;
     var t=e.touches[0];
     if(Math.abs(t.clientX-tx)>5||Math.abs(t.clientY-ty)>5){
       tmov=true; e.preventDefault(); dragId=tid;
-      card.classList.add("dragging");
-      clearInds();
-      var ind=bestInd(t.clientX,t.clientY);
-      if(ind) ind.classList.add("on");
+      card.classList.add('dragging');
+      updateIndicator(t.clientX,t.clientY);
     }
   },{passive:false});
-  grip.addEventListener("touchend",function(e){
-    card.classList.remove("dragging");
+  grip.addEventListener('touchend',function(e){
+    card.classList.remove('dragging');
     if(tmov&&tid!=null){
       var t=e.changedTouches[0];
-      var ind=bestInd(t.clientX,t.clientY)||document.querySelector(".drop-ind.on");
+      updateIndicator(t.clientX,t.clientY);
+      var ind=document.querySelector('.drop-ind.on');
       if(ind) moveNote(tid,ind.dataset.col,parseInt(ind.dataset.idx));
     }
     clearInds(); tid=null; tmov=false; dragId=null;
   });
   grip.oncontextmenu=function(e){e.preventDefault();return false;};
 }
-
-function moveNote(id,col,toIdx){
-  var n=notes.find(function(x){return x.id==id;});
-  if(!n) return;
-  notes=notes.filter(function(x){return x.id!=id;});
-  n.col=col;
-  var bc={idag:[],imorgon:[],senare:[]};
-  notes.forEach(function(x){bc[x.col].push(x);});
-  bc[col].splice(toIdx,0,n);
-  notes=bc.idag.concat(bc.imorgon,bc.senare);
-  render();
-}
-
-function toggleDone(id){var n=notes.find(function(x){return x.id==id;});if(n){n.done=!n.done;render();}}
-function delNote(id){if(!confirm("Ta bort?"))return;notes=notes.filter(function(x){return x.id!=id;});render();}
-function newDay(){
-  var c=notes.filter(function(n){return n.col==="imorgon";}).length;
-  if(!c){alert("Inga lappar i I morgon!");return;}
-  if(!confirm("Flytta "+c+" lappar till I dag?"))return;
-  notes.forEach(function(n){if(n.col==="imorgon")n.col="idag";});render();
-}
-function doExport(){
-  var b=new Blob([JSON.stringify(notes,null,2)],{type:"application/json"});
-  var u=URL.createObjectURL(b);var a=document.createElement("a");
-  a.href=u;a.download="henrik-lappar.json";a.click();URL.revokeObjectURL(u);
-}
-function doImport(e){
-  var f=e.target.files[0];if(!f)return;
-  var r=new FileReader();
-  r.onload=function(ev){
-    try{var d=JSON.parse(ev.target.result);if(!Array.isArray(d))throw 0;
-      if(!confirm("Importera "+d.length+" lappar?"))return;
-      notes=d;render();
-    }catch(err){alert("Ogiltig fil.");}
-    e.target.value="";
-  };
-  r.readAsText(f);
-}
-
-function openModal(id){
-  editId=id||null;
-  var n=id?notes.find(function(x){return x.id==id;}):null;
-  document.getElementById("mtitle").textContent=n?"Redigera lapp":"Ny lapp";
-  document.getElementById("mtxt").value=n?n.text:"";
-  document.getElementById("mcol").value=n?n.col:"idag";
-  document.getElementById("mapp").checked=n?n.app:false;
-  document.getElementById("mdone").checked=n?n.done:false;
-  document.getElementById("mwhite").checked=n?n.white:false;
-  document.getElementById("overlay").classList.add("open");
-  setTimeout(function(){document.getElementById("mtxt").focus();},100);
-}
-function closeModal(){document.getElementById("overlay").classList.remove("open");editId=null;}
-function saveModal(){
-  var txt=document.getElementById("mtxt").value.trim();
-  if(!txt){document.getElementById("mtxt").focus();return;}
-  var col=document.getElementById("mcol").value;
-  var app=document.getElementById("mapp").checked;
-  var done=document.getElementById("mdone").checked;
-  var white=document.getElementById("mwhite").checked;
-  if(editId){
-    var n=notes.find(function(x){return x.id==editId;});
-    if(n){n.text=txt;n.col=col;n.app=app;n.done=done;n.white=white;}
-  } else {
-    notes.push({id:Date.now(),col:col,text:txt,app:app,done:done,white:white});
-  }
-  render();closeModal();
-}
-document.getElementById("overlay").onclick=function(e){if(e.target===this)closeModal();};
-
-if(!load()){notes=JSON.parse(JSON.stringify(NOTES));}
-render();
 </script>
 </body>
 </html>
