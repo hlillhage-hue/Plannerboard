@@ -1,4 +1,4 @@
-var CACHE = "postit-v1";
+var CACHE = "postit-v2";
 var FILES = ["./index.html", "./manifest.json"];
 
 self.addEventListener("install", function(e) {
@@ -21,8 +21,8 @@ self.addEventListener("activate", function(e) {
 
 self.addEventListener("fetch", function(e) {
   e.respondWith(
-    caches.match(e.request).then(function(cached) {
-      return cached || fetch(e.request).catch(function() { return caches.match("./index.html"); });
+    fetch(e.request).catch(function() {
+      return caches.match(e.request);
     })
   );
 });
