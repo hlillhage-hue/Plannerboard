@@ -253,24 +253,17 @@ function makeCard(n) {
 // ── Desktop drag ───────────────────────────────────────────────────────────
 document.addEventListener("dragover", function(e) {
   e.preventDefault(); clearIndicators();
-  var ind = getClosestIndicator(e.clientX, e.clientY);
+  var ind = getIndicatorAtPoint(e.clientX, e.clientY);
   if (ind) ind.classList.add("visible");
 });
 document.addEventListener("drop", function(e) {
   e.preventDefault();
   var ind = document.querySelector(".drop-indicator.visible");
+  if (!ind) ind = getIndicatorAtPoint(e.clientX, e.clientY);
   if (ind && dragId !== null) moveNote(dragId, ind.dataset.col, parseInt(ind.dataset.index));
   clearIndicators(); dragId = null;
 });
 
-function getClosestIndicator(x, y) {
-  var best=null, bestDist=999999;
-  document.querySelectorAll(".drop-indicator").forEach(function(el) {
-    var lr = el.closest(".notes-list").getBoundingClientRect();
-    if (x>=lr.left && x<=lr.right) {
-      var r=el.getBoundingClientRect();
-      var dist=Math.abs(y-(r.top+r.height/2));
-      if (dist<bestDist){ bestDist=dist; best=el; }
     }
   });
   return best;
@@ -279,49 +272,72 @@ function clearIndicators() {
   document.querySelectorAll(".drop-indicator.visible").forEach(function(el){ el.classList.remove("visible"); });
 }
 
-// ── Touch drag — Fix #2: always use indicator position ────────────────────
-var touchId=null, touchMoved=false, tx0=0, ty0=0, touchTimer=null;
+// ── Touch drag ────────────────────────────────────────────────────────────
+var touchId=null, touchMoved=false, tx0=0, ty0=0;
 
 function addTouch(grip, id, card) {
   grip.addEventListener("touchstart", function(e) {
     touchId=id; touchMoved=false;
     tx0=e.touches[0].clientX; ty0=e.touches[0].clientY;
-    // Block long-press context menu
-    touchTimer = setTimeout(function(){}, 600);
   }, {passive:true});
 
   grip.addEventListener("touchmove", function(e) {
     if (!touchId) return;
-    var dx=Math.abs(e.touches[0].clientX-tx0), dy=Math.abs(e.touches[0].clientY-ty0);
+    var t = e.touches[0];
+    var dx=Math.abs(t.clientX-tx0), dy=Math.abs(t.clientY-ty0);
     if (dx>5 || dy>5) {
       touchMoved=true;
       e.preventDefault();
-      dragId=touchId;
-      // Highlight dragging card
       card.classList.add("dragging");
       clearIndicators();
-      // Fix #2: find indicator based on actual touch position
-      var ind = getClosestIndicator(e.touches[0].clientX, e.touches[0].clientY);
+      var ind = getIndicatorAtPoint(t.clientX, t.clientY);
       if (ind) ind.classList.add("visible");
     }
   }, {passive:false});
 
   grip.addEventListener("touchend", function(e) {
-    clearTimeout(touchTimer);
     card.classList.remove("dragging");
     if (touchMoved && touchId!==null) {
-      // Fix #2: use the visible indicator — always respect it
-      var ind = document.querySelector(".drop-indicator.visible");
-      if (ind) {
-        moveNote(touchId, ind.dataset.col, parseInt(ind.dataset.index));
-      }
+      var t = e.changedTouches[0];
+      // Re-find indicator at release point (most accurate)
+      var ind = getIndicatorAtPoint(t.clientX, t.clientY);
+      if (!ind) ind = document.querySelector(".drop-indicator.visible");
+      if (ind) moveNote(touchId, ind.dataset.col, parseInt(ind.dataset.index));
     }
     clearIndicators();
-    touchId=null; touchMoved=false; dragId=null;
+    touchId=null; touchMoved=false;
   });
 
-  // Fix #1: block context menu on long press
   grip.addEventListener("contextmenu", function(e){ e.preventDefault(); return false; });
+}
+
+// Find indicator by scanning all indicators and picking closest in Y within the hovered column
+function getIndicatorAtPoint(x, y) {
+  var best = null, bestDist = 999999;
+  // First find which column we're in
+  var targetCol = null;
+  document.querySelectorAll(".notes-list").forEach(function(list) {
+    var r = list.getBoundingClientRect();
+    if (x >= r.left && x <= r.right) targetCol = list;
+  });
+  if (!targetCol) {
+    // If not inside any column, find closest column by X
+    var closestCol = null, closestX = 999999;
+    document.querySelectorAll(".notes-list").forEach(function(list) {
+      var r = list.getBoundingClientRect();
+      var mid = (r.left + r.right) / 2;
+      if (Math.abs(x - mid) < closestX) { closestX = Math.abs(x - mid); closestCol = list; }
+    });
+    targetCol = closestCol;
+  }
+  if (!targetCol) return null;
+  targetCol.querySelectorAll(".drop-indicator").forEach(function(el) {
+    var r = el.getBoundingClientRect();
+    var midY = r.top + r.height / 2;
+    var dist = Math.abs(y - midY);
+    if (dist < bestDist) { bestDist = dist; best = el; }
+  });
+  return best;
 }
 
 function moveNote(id, col, toIndex) {
