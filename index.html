@@ -11,166 +11,76 @@
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-:root {
-  --yellow: #f9e84e;
-  --white-note: #f5f0e0;
-  --board: #2d4a3e;
-  --col: rgba(255,255,255,0.13);
-}
-body {
-  font-family: 'Patrick Hand', cursive;
-  background: var(--board);
-  min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
+:root { --yellow:#f9e84e; --white-note:#f5f0e0; --board:#2d4a3e; --col:rgba(255,255,255,0.13); }
+body { font-family:'Patrick Hand',cursive; background:var(--board); min-height:100vh; overflow-x:hidden; overflow-y:auto; }
 header {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(20,40,30,0.95);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 14px; flex-wrap: wrap;
+  position:sticky; top:0; z-index:100;
+  background:rgba(20,40,30,0.95);
+  border-bottom:1px solid rgba(255,255,255,0.1);
+  display:flex; align-items:center; gap:8px;
+  padding:10px 14px; flex-wrap:wrap;
 }
-header h1 {
-  font-family: 'Caveat', cursive;
-  font-size: 26px; font-weight: 700;
-  color: var(--yellow); margin-right: auto;
-}
+header h1 { font-family:'Caveat',cursive; font-size:26px; font-weight:700; color:var(--yellow); margin-right:auto; }
 .hbtn {
-  background: transparent;
-  color: rgba(255,255,255,0.75);
-  border: 1.5px solid rgba(255,255,255,0.3);
-  border-radius: 20px; padding: 6px 14px;
-  font-family: 'Patrick Hand', cursive;
-  font-size: 14px; cursor: pointer;
+  background:transparent; color:rgba(255,255,255,0.75);
+  border:1.5px solid rgba(255,255,255,0.3); border-radius:20px;
+  padding:6px 14px; font-family:'Patrick Hand',cursive; font-size:14px; cursor:pointer;
 }
-.hbtn:active { opacity: 0.6; }
+.hbtn:active { opacity:0.6; }
+.hbtn.active { background:rgba(249,232,78,0.2); color:var(--yellow); border-color:var(--yellow); }
 #add-btn {
-  background: var(--yellow); color: #1a3028;
-  border: none; border-radius: 50%;
-  width: 42px; height: 42px;
-  font-size: 26px; font-weight: bold; cursor: pointer;
+  background:var(--yellow); color:#1a3028; border:none; border-radius:50%;
+  width:42px; height:42px; font-size:26px; font-weight:bold; cursor:pointer;
 }
-#board {
-  display: flex; gap: 12px;
-  padding: 14px 12px 60px;
-  align-items: flex-start;
-  overflow-x: auto;
-}
-.column {
-  flex: 0 0 calc(33.33vw - 14px);
-  min-width: 220px;
-  background: var(--col);
-  border-radius: 14px;
-  padding: 10px 8px 14px;
-  display: flex; flex-direction: column;
-}
-.col-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 10px; padding: 0 4px;
-}
-.col-title { font-family: 'Caveat', cursive; font-size: 22px; color: #fff; font-weight: 700; }
-.col-count {
-  background: rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.7);
-  font-size: 12px; padding: 2px 8px; border-radius: 20px;
-}
-.notes-list { display: flex; flex-direction: column; min-height: 60px; }
-.drop-indicator {
-  height: 3px; background: var(--yellow);
-  border-radius: 3px; margin: 2px 4px; display: none;
-  box-shadow: 0 0 8px rgba(249,232,78,0.6);
-}
-.drop-indicator.visible { display: block; }
-.note-wrap { padding: 4px 0; }
-.note {
-  background: var(--yellow);
-  border-radius: 3px 12px 12px 3px;
-  border-left: 5px solid rgba(0,0,0,0.12);
-  min-height: 70px; position: relative;
-  box-shadow: 2px 3px 8px rgba(0,0,0,0.2);
-  word-break: break-word;
-}
-.note.white { background: var(--white-note); }
-.note.dragging { opacity: 0.35; }
+#board { display:flex; gap:12px; padding:14px 12px 60px; align-items:flex-start; overflow-x:auto; }
+.column { flex:0 0 calc(33.33vw - 14px); min-width:220px; background:var(--col); border-radius:14px; padding:10px 8px 14px; display:flex; flex-direction:column; }
+.col-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; padding:0 4px; }
+.col-title { font-family:'Caveat',cursive; font-size:22px; color:#fff; font-weight:700; }
+.col-count { background:rgba(255,255,255,0.15); color:rgba(255,255,255,0.7); font-size:12px; padding:2px 8px; border-radius:20px; }
+.notes-list { display:flex; flex-direction:column; min-height:60px; }
+.drop-indicator { height:3px; background:var(--yellow); border-radius:3px; margin:2px 4px; display:none; box-shadow:0 0 8px rgba(249,232,78,0.6); }
+.drop-indicator.visible { display:block; }
+.note-wrap { padding:4px 0; }
+.note { background:var(--yellow); border-radius:3px 12px 12px 3px; border-left:5px solid rgba(0,0,0,0.12); min-height:70px; position:relative; box-shadow:2px 3px 8px rgba(0,0,0,0.2); word-break:break-word; }
+.note.white { background:var(--white-note); }
+.note.dragging { opacity:0.35; }
+.note.hidden-done { display:none; }
 .note-grip {
-  cursor: grab;
-  padding: 6px 12px 4px 14px;
-  display: flex; align-items: center; gap: 8px;
-  border-bottom: 1px solid rgba(0,0,0,0.07);
+  padding:8px 12px 6px 14px;
+  display:flex; align-items:center; gap:8px;
+  border-bottom:1px solid rgba(0,0,0,0.07);
+  /* Fix #1: block context menu on grip */
+  -webkit-user-select:none; user-select:none;
+  touch-action:none;
 }
-.note-grip-dots { color: rgba(0,0,0,0.25); font-size: 14px; letter-spacing: -1px; user-select: none; }
-.note-grip-label { font-family: 'Patrick Hand', cursive; font-size: 11px; color: rgba(0,0,0,0.3); text-transform: uppercase; letter-spacing: 1px; }
-.note-body { padding: 10px 12px 12px 14px; }
-.note-text {
-  font-family: 'Caveat', cursive; font-size: 18px; font-weight: 600;
-  color: #1a1a1a; line-height: 1.3; white-space: pre-wrap;
-}
-.note-text.done { text-decoration: line-through; opacity: 0.5; }
-.app-badge {
-  display: inline-block; margin-top: 6px; font-size: 11px;
-  color: rgba(0,0,0,0.45); border: 1.5px solid rgba(0,0,0,0.25);
-  border-radius: 20px; padding: 1px 8px;
-  font-family: 'Patrick Hand', cursive; font-weight: bold; letter-spacing: 1px;
-}
-.note-actions {
-  position: absolute; top: 4px; right: 6px;
-  display: flex; gap: 3px;
-}
-.nbtn {
-  background: rgba(0,0,0,0.08); border: none; border-radius: 50%;
-  width: 26px; height: 26px; font-size: 13px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  color: rgba(0,0,0,0.55);
-}
-.nbtn.del:active { background: #e53935; color: #fff; }
-#overlay {
-  display: none; position: fixed; inset: 0; z-index: 200;
-  background: rgba(0,0,0,0.6); align-items: center; justify-content: center;
-}
-#overlay.open { display: flex; }
-#modal {
-  background: var(--yellow); border-radius: 4px 18px 18px 4px;
-  border-left: 7px solid rgba(0,0,0,0.15);
-  padding: 22px; width: min(88vw, 400px);
-  animation: pop 0.18s ease;
-}
-@keyframes pop { from { transform: scale(0.88); opacity:0; } to { transform: scale(1); opacity:1; } }
-#modal h2 { font-family: 'Caveat', cursive; font-size: 22px; margin-bottom: 12px; }
-#modal textarea {
-  width: 100%; height: 90px; background: rgba(255,255,255,0.45);
-  border: 2px solid rgba(0,0,0,0.15); border-radius: 8px;
-  padding: 8px 10px; font-family: 'Caveat', cursive; font-size: 19px;
-  resize: none; outline: none; color: #1a1a1a;
-}
-.mrow { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
-.mrow label { font-size: 13px; color: rgba(0,0,0,0.6); display: flex; align-items: center; gap: 5px; }
-.mrow select {
-  padding: 5px 8px; border-radius: 7px; border: 2px solid rgba(0,0,0,0.15);
-  background: rgba(255,255,255,0.5); font-family: 'Patrick Hand', cursive; font-size: 14px;
-}
-.mbtns { display: flex; gap: 10px; margin-top: 14px; justify-content: flex-end; }
-.btn-cancel {
-  padding: 9px 18px; border-radius: 9px; border: 2px solid rgba(0,0,0,0.2);
-  background: transparent; font-family: 'Patrick Hand', cursive; font-size: 14px; cursor: pointer;
-}
-.btn-save {
-  padding: 9px 22px; border-radius: 9px; background: #1a3028; color: var(--yellow);
-  border: none; font-family: 'Caveat', cursive; font-size: 18px; font-weight: 700; cursor: pointer;
-}
-#import-file { display: none; }
-#install-banner {
-  display: none; position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-  background: var(--yellow); border-radius: 20px; padding: 10px 20px;
-  font-family: 'Caveat', cursive; font-size: 18px; font-weight: 700;
-  color: #1a3028; box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-  cursor: pointer; z-index: 150; white-space: nowrap;
-}
+.note-grip-dots { color:rgba(0,0,0,0.3); font-size:16px; letter-spacing:2px; }
+.note-grip-label { font-family:'Patrick Hand',cursive; font-size:11px; color:rgba(0,0,0,0.3); text-transform:uppercase; letter-spacing:1px; }
+.note-body { padding:10px 12px 12px 14px; }
+.note-text { font-family:'Caveat',cursive; font-size:18px; font-weight:600; color:#1a1a1a; line-height:1.3; white-space:pre-wrap; }
+.note-text.done { text-decoration:line-through; opacity:0.5; }
+.app-badge { display:inline-block; margin-top:6px; font-size:11px; color:rgba(0,0,0,0.45); border:1.5px solid rgba(0,0,0,0.25); border-radius:20px; padding:1px 8px; font-family:'Patrick Hand',cursive; font-weight:bold; letter-spacing:1px; }
+.note-actions { position:absolute; top:4px; right:6px; display:flex; gap:3px; }
+.nbtn { background:rgba(0,0,0,0.08); border:none; border-radius:50%; width:26px; height:26px; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:rgba(0,0,0,0.55); }
+.nbtn.del:active { background:#e53935; color:#fff; }
+#overlay { display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; }
+#overlay.open { display:flex; }
+#modal { background:var(--yellow); border-radius:4px 18px 18px 4px; border-left:7px solid rgba(0,0,0,0.15); padding:22px; width:min(88vw,400px); animation:pop 0.18s ease; }
+@keyframes pop { from{transform:scale(0.88);opacity:0} to{transform:scale(1);opacity:1} }
+#modal h2 { font-family:'Caveat',cursive; font-size:22px; margin-bottom:12px; }
+#modal textarea { width:100%; height:90px; background:rgba(255,255,255,0.45); border:2px solid rgba(0,0,0,0.15); border-radius:8px; padding:8px 10px; font-family:'Caveat',cursive; font-size:19px; resize:none; outline:none; color:#1a1a1a; }
+.mrow { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; align-items:center; }
+.mrow label { font-size:13px; color:rgba(0,0,0,0.6); display:flex; align-items:center; gap:5px; }
+.mrow select { padding:5px 8px; border-radius:7px; border:2px solid rgba(0,0,0,0.15); background:rgba(255,255,255,0.5); font-family:'Patrick Hand',cursive; font-size:14px; }
+.mbtns { display:flex; gap:10px; margin-top:14px; justify-content:flex-end; }
+.btn-cancel { padding:9px 18px; border-radius:9px; border:2px solid rgba(0,0,0,0.2); background:transparent; font-family:'Patrick Hand',cursive; font-size:14px; cursor:pointer; }
+.btn-save { padding:9px 22px; border-radius:9px; background:#1a3028; color:var(--yellow); border:none; font-family:'Caveat',cursive; font-size:18px; font-weight:700; cursor:pointer; }
+#import-file { display:none; }
 </style>
 </head>
 <body>
 <header>
   <h1>📌 Henrik's Board</h1>
+  <button class="hbtn" id="filter-btn" onclick="toggleFilter()">👁 Visa klara</button>
   <button class="hbtn" onclick="exportNotes()">💾 Exportera</button>
   <input type="file" id="import-file" accept=".json" onchange="importNotes(event)">
   <button class="hbtn" onclick="document.getElementById('import-file').click()">📂 Importera</button>
@@ -210,99 +120,81 @@ header h1 {
   </div>
 </div>
 
-<button id="install-banner" onclick="installApp()">📲 Installera som app</button>
-
 <script>
 var INIT = [
-  {id:1,  col:"idag",    text:"Sök Jobb",                            app:false, done:false, white:false},
-  {id:2,  col:"idag",    text:"Gör Alva Labs",                       app:false, done:false, white:true},
-  {id:3,  col:"imorgon", text:"Träning\n-cykla\n-orientering\n-styrka", app:false, done:false, white:false},
-  {id:4,  col:"imorgon", text:"Hundpatrullen\n-publicera",           app:true,  done:false, white:false},
-  {id:5,  col:"imorgon", text:"Jobbsökverktyg\n-förbättra",         app:true,  done:false, white:false},
-  {id:6,  col:"senare",  text:"Intervju",                            app:true,  done:false, white:false},
-  {id:7,  col:"senare",  text:"Cykelfix\nClaude web",                app:true,  done:false, white:false},
-  {id:8,  col:"senare",  text:"Inlägg\nMinska konsultdag med 80%",  app:false, done:false, white:false},
-  {id:9,  col:"senare",  text:"Video Portalen",                      app:false, done:false, white:false},
-  {id:10, col:"senare",  text:"Hundkollen",                          app:true,  done:false, white:false},
-  {id:11, col:"senare",  text:"Projektassist",                       app:true,  done:false, white:false},
-  {id:12, col:"senare",  text:"Erfarenhet\n(dela kunskap)",          app:false, done:false, white:false},
-  {id:13, col:"senare",  text:"Elerspänning",                        app:true,  done:false, white:false},
-  {id:14, col:"senare",  text:"Kunskapträning",                      app:false, done:false, white:false},
-  {id:15, col:"senare",  text:"Egen Verksamhet",                     app:false, done:false, white:false}
+  {id:3,col:"idag",text:"Träning\n-cykla\n-orientering\n-styrka",app:false,done:false,white:false},
+  {id:1,col:"idag",text:"Sök Jobb",app:false,done:false,white:false},
+  {id:2,col:"idag",text:"Gör Alva Labs",app:false,done:true,white:true},
+  {id:10,col:"idag",text:"Hundkollen",app:true,done:false,white:false},
+  {id:4,col:"idag",text:"Hundpatrullen\n-publicera",app:true,done:false,white:false},
+  {id:5,col:"idag",text:"Jobbsökverktyg\n-förbättra",app:true,done:false,white:false},
+  {id:11,col:"senare",text:"Projektassist",app:true,done:false,white:false},
+  {id:13,col:"senare",text:"Elerspänning",app:true,done:true,white:false},
+  {id:6,col:"senare",text:"Intervju",app:true,done:false,white:false},
+  {id:7,col:"senare",text:"Cykelfix\nClaude web",app:true,done:false,white:false},
+  {id:1779444152377,col:"senare",text:"Plannerboard",app:true,done:false,white:false},
+  {id:12,col:"senare",text:"Erfarenhet\n(dela kunskap)",app:false,done:false,white:false},
+  {id:9,col:"senare",text:"Video Portalen",app:false,done:false,white:false},
+  {id:8,col:"senare",text:"Inlägg\nMinska konsultdag med 80%",app:false,done:false,white:false},
+  {id:14,col:"senare",text:"Kunskapträning",app:false,done:false,white:false},
+  {id:15,col:"senare",text:"Egen Verksamhet",app:false,done:false,white:false}
 ];
 
 var notes = [];
 var editId = null;
 var dragId = null;
-var deferredInstall = null;
+var showDone = false; // Fix #3: filter state
 
-// ── Service Worker ─────────────────────────────────────────────────────────
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js");
-}
+// ── Service Worker ────────────────────────────────────────────────────────
+if ("serviceWorker" in navigator) { navigator.serviceWorker.register("./sw.js"); }
 
-// ── Install banner ─────────────────────────────────────────────────────────
-window.addEventListener("beforeinstallprompt", function(e) {
-  e.preventDefault();
-  deferredInstall = e;
-  document.getElementById("install-banner").style.display = "block";
-});
-function installApp() {
-  if (deferredInstall) {
-    deferredInstall.prompt();
-    deferredInstall.userChoice.then(function() {
-      deferredInstall = null;
-      document.getElementById("install-banner").style.display = "none";
-    });
-  }
+// ── Filter #3 ─────────────────────────────────────────────────────────────
+function toggleFilter() {
+  showDone = !showDone;
+  var btn = document.getElementById("filter-btn");
+  btn.textContent = showDone ? "🙈 Dölj klara" : "👁 Visa klara";
+  btn.classList.toggle("active", showDone);
+  applyFilter();
 }
-
-// ── Persistence via URL hash ───────────────────────────────────────────────
-function saveToHash() {
-  try {
-    var encoded = btoa(encodeURIComponent(JSON.stringify(notes)));
-    history.replaceState(null, null, '#' + encoded);
-  } catch(e) {}
-}
-function loadFromHash() {
-  try {
-    var hash = window.location.hash.slice(1);
-    if (hash) {
-      var parsed = JSON.parse(decodeURIComponent(atob(hash)));
-      if (Array.isArray(parsed) && parsed.length > 0) { notes = parsed; return true; }
+function applyFilter() {
+  document.querySelectorAll(".note").forEach(function(el) {
+    var id = parseInt(el.dataset.id) || Number(el.dataset.id);
+    var n = notes.find(function(x){ return x.id == el.dataset.id; });
+    if (n && n.done && !showDone) {
+      el.closest(".note-wrap").style.display = "none";
+    } else {
+      el.closest(".note-wrap").style.display = "";
     }
-  } catch(e) {}
+  });
+}
+
+// ── Persistence ────────────────────────────────────────────────────────────
+function save() {
+  try { var enc = btoa(encodeURIComponent(JSON.stringify(notes))); history.replaceState(null,null,'#'+enc); } catch(e){}
+  try { localStorage.setItem("postit", JSON.stringify(notes)); } catch(e){}
+}
+function load() {
+  try { var h=window.location.hash.slice(1); if(h){var p=JSON.parse(decodeURIComponent(atob(h))); if(Array.isArray(p)&&p.length>0){notes=p;return true;}} } catch(e){}
+  try { var s=localStorage.getItem("postit"); if(s){var p=JSON.parse(s); if(Array.isArray(p)&&p.length>0){notes=p;return true;}} } catch(e){}
   return false;
 }
 
-// ── Also try localStorage as backup ───────────────────────────────────────
-function saveLocal() {
-  try { localStorage.setItem("postit", JSON.stringify(notes)); } catch(e) {}
-}
-function loadLocal() {
-  try {
-    var s = localStorage.getItem("postit");
-    if (s) { var p = JSON.parse(s); if (Array.isArray(p) && p.length > 0) { notes = p; return true; } }
-  } catch(e) {}
-  return false;
-}
-function save() { saveToHash(); saveLocal(); }
-
-// ── Render ────────────────────────────────────────────────────────────────
+// ── Render ─────────────────────────────────────────────────────────────────
 function render() {
   save();
   ["idag","imorgon","senare"].forEach(function(col) {
-    var list = document.getElementById("list-" + col);
-    var count = document.getElementById("count-" + col);
-    var colNotes = notes.filter(function(n){ return n.col === col; });
+    var list = document.getElementById("list-"+col);
+    var count = document.getElementById("count-"+col);
+    var colNotes = notes.filter(function(n){ return n.col===col; });
     count.textContent = colNotes.length;
     list.innerHTML = "";
     list.appendChild(makeIndicator(col, 0));
     colNotes.forEach(function(n, i) {
       list.appendChild(makeCard(n));
-      list.appendChild(makeIndicator(col, i + 1));
+      list.appendChild(makeIndicator(col, i+1));
     });
   });
+  applyFilter();
 }
 
 function makeIndicator(col, index) {
@@ -316,53 +208,49 @@ function makeCard(n) {
   var wrap = document.createElement("div");
   wrap.className = "note-wrap";
   var div = document.createElement("div");
-  div.className = "note" + (n.white ? " white" : "");
+  div.className = "note" + (n.white?" white":"");
   div.dataset.id = n.id;
 
+  // Grip — Fix #1: block context menu
   var grip = document.createElement("div");
   grip.className = "note-grip";
-  grip.innerHTML = '<span class="note-grip-dots">⠿⠿</span><span class="note-grip-label">dra</span>';
+  grip.innerHTML = '<span class="note-grip-dots">⠿⠿⠿</span><span class="note-grip-label">dra</span>';
+  grip.addEventListener("contextmenu", function(e){ e.preventDefault(); return false; });
+  grip.addEventListener("touchstart", function(e){ e.stopPropagation(); }, {passive:true});
 
   var actions = document.createElement("div");
   actions.className = "note-actions";
-  var editBtn = document.createElement("button");
-  editBtn.className = "nbtn"; editBtn.textContent = "✏️";
-  editBtn.onclick = function(e) { e.stopPropagation(); openEdit(n.id); };
-  var doneBtn = document.createElement("button");
-  doneBtn.className = "nbtn"; doneBtn.textContent = n.done ? "↩️" : "✔️";
-  doneBtn.onclick = function(e) { e.stopPropagation(); toggleDone(n.id); };
-  var delBtn = document.createElement("button");
-  delBtn.className = "nbtn del"; delBtn.textContent = "🗑";
-  delBtn.onclick = function(e) { e.stopPropagation(); deleteNote(n.id); };
+  var editBtn = document.createElement("button"); editBtn.className="nbtn"; editBtn.textContent="✏️";
+  editBtn.onclick = function(e){ e.stopPropagation(); openEdit(n.id); };
+  var doneBtn = document.createElement("button"); doneBtn.className="nbtn"; doneBtn.textContent=n.done?"↩️":"✔️";
+  doneBtn.onclick = function(e){ e.stopPropagation(); toggleDone(n.id); };
+  var delBtn = document.createElement("button"); delBtn.className="nbtn del"; delBtn.textContent="🗑";
+  delBtn.onclick = function(e){ e.stopPropagation(); deleteNote(n.id); };
   actions.appendChild(editBtn); actions.appendChild(doneBtn); actions.appendChild(delBtn);
 
-  var body = document.createElement("div");
-  body.className = "note-body";
-  var txt = document.createElement("div");
-  txt.className = "note-text" + (n.done ? " done" : "");
-  txt.textContent = n.text;
+  var body = document.createElement("div"); body.className="note-body";
+  var txt = document.createElement("div"); txt.className="note-text"+(n.done?" done":""); txt.textContent=n.text;
   body.appendChild(txt);
-  if (n.app) {
-    var badge = document.createElement("div");
-    badge.className = "app-badge"; badge.textContent = "● APP";
-    body.appendChild(badge);
-  }
+  if (n.app) { var badge=document.createElement("div"); badge.className="app-badge"; badge.textContent="● APP"; body.appendChild(badge); }
 
   div.appendChild(grip); div.appendChild(actions); div.appendChild(body);
 
+  // Desktop drag from grip
   grip.draggable = true;
-  grip.addEventListener("dragstart", function() {
+  grip.addEventListener("dragstart", function(e) {
     dragId = n.id;
     setTimeout(function(){ div.classList.add("dragging"); }, 0);
   });
   grip.addEventListener("dragend", function() {
     div.classList.remove("dragging"); clearIndicators();
   });
+
   addTouch(grip, n.id, div);
   wrap.appendChild(div);
   return wrap;
 }
 
+// ── Desktop drag ───────────────────────────────────────────────────────────
 document.addEventListener("dragover", function(e) {
   e.preventDefault(); clearIndicators();
   var ind = getClosestIndicator(e.clientX, e.clientY);
@@ -371,18 +259,18 @@ document.addEventListener("dragover", function(e) {
 document.addEventListener("drop", function(e) {
   e.preventDefault();
   var ind = document.querySelector(".drop-indicator.visible");
-  if (ind && dragId) moveNote(dragId, ind.dataset.col, parseInt(ind.dataset.index));
-  clearIndicators();
+  if (ind && dragId !== null) moveNote(dragId, ind.dataset.col, parseInt(ind.dataset.index));
+  clearIndicators(); dragId = null;
 });
 
 function getClosestIndicator(x, y) {
-  var best = null, bestDist = 999999;
+  var best=null, bestDist=999999;
   document.querySelectorAll(".drop-indicator").forEach(function(el) {
     var lr = el.closest(".notes-list").getBoundingClientRect();
-    if (x >= lr.left && x <= lr.right) {
-      var r = el.getBoundingClientRect();
-      var dist = Math.abs(y - (r.top + r.height / 2));
-      if (dist < bestDist) { bestDist = dist; best = el; }
+    if (x>=lr.left && x<=lr.right) {
+      var r=el.getBoundingClientRect();
+      var dist=Math.abs(y-(r.top+r.height/2));
+      if (dist<bestDist){ bestDist=dist; best=el; }
     }
   });
   return best;
@@ -390,49 +278,78 @@ function getClosestIndicator(x, y) {
 function clearIndicators() {
   document.querySelectorAll(".drop-indicator.visible").forEach(function(el){ el.classList.remove("visible"); });
 }
-function moveNote(id, col, toIndex) {
-  var n = notes.find(function(x){ return x.id === id; });
-  if (!n) return;
-  notes = notes.filter(function(x){ return x.id !== id; });
-  n.col = col;
-  var byCol = {idag:[], imorgon:[], senare:[]};
-  notes.forEach(function(x){ byCol[x.col].push(x); });
-  byCol[col].splice(toIndex, 0, n);
-  notes = [].concat(byCol.idag, byCol.imorgon, byCol.senare);
-  render();
-}
 
-var touchId = null, touchMoved = false, tx0 = 0, ty0 = 0;
+// ── Touch drag — Fix #2: always use indicator position ────────────────────
+var touchId=null, touchMoved=false, tx0=0, ty0=0, touchTimer=null;
+
 function addTouch(grip, id, card) {
   grip.addEventListener("touchstart", function(e) {
-    touchId = id; touchMoved = false;
-    tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY;
-  }, {passive: true});
+    touchId=id; touchMoved=false;
+    tx0=e.touches[0].clientX; ty0=e.touches[0].clientY;
+    // Block long-press context menu
+    touchTimer = setTimeout(function(){}, 600);
+  }, {passive:true});
+
   grip.addEventListener("touchmove", function(e) {
     if (!touchId) return;
-    if (Math.abs(e.touches[0].clientX-tx0)>8 || Math.abs(e.touches[0].clientY-ty0)>8) {
-      touchMoved = true; e.preventDefault(); dragId = touchId;
+    var dx=Math.abs(e.touches[0].clientX-tx0), dy=Math.abs(e.touches[0].clientY-ty0);
+    if (dx>5 || dy>5) {
+      touchMoved=true;
+      e.preventDefault();
+      dragId=touchId;
+      // Highlight dragging card
+      card.classList.add("dragging");
       clearIndicators();
+      // Fix #2: find indicator based on actual touch position
       var ind = getClosestIndicator(e.touches[0].clientX, e.touches[0].clientY);
       if (ind) ind.classList.add("visible");
     }
-  }, {passive: false});
+  }, {passive:false});
+
   grip.addEventListener("touchend", function(e) {
-    if (touchMoved && touchId) {
+    clearTimeout(touchTimer);
+    card.classList.remove("dragging");
+    if (touchMoved && touchId!==null) {
+      // Fix #2: use the visible indicator — always respect it
       var ind = document.querySelector(".drop-indicator.visible");
-      if (ind) moveNote(touchId, ind.dataset.col, parseInt(ind.dataset.index));
+      if (ind) {
+        moveNote(touchId, ind.dataset.col, parseInt(ind.dataset.index));
+      }
     }
-    clearIndicators(); touchId = null; touchMoved = false; dragId = null;
+    clearIndicators();
+    touchId=null; touchMoved=false; dragId=null;
   });
+
+  // Fix #1: block context menu on long press
+  grip.addEventListener("contextmenu", function(e){ e.preventDefault(); return false; });
 }
 
-function toggleDone(id) { var n=notes.find(function(x){return x.id===id;}); if(n){n.done=!n.done;render();} }
-function deleteNote(id) { if(!confirm("Ta bort lappen?"))return; notes=notes.filter(function(x){return x.id!==id;}); render(); }
+function moveNote(id, col, toIndex) {
+  var n=notes.find(function(x){ return x.id==id; });
+  if (!n) return;
+  notes=notes.filter(function(x){ return x.id!=id; });
+  n.col=col;
+  var byCol={idag:[],imorgon:[],senare:[]};
+  notes.forEach(function(x){ byCol[x.col].push(x); });
+  byCol[col].splice(toIndex, 0, n);
+  notes=[].concat(byCol.idag, byCol.imorgon, byCol.senare);
+  render();
+}
+
+// ── CRUD ──────────────────────────────────────────────────────────────────
+function toggleDone(id) {
+  var n=notes.find(function(x){ return x.id==id; });
+  if(n){ n.done=!n.done; render(); }
+}
+function deleteNote(id) {
+  if(!confirm("Ta bort lappen?")) return;
+  notes=notes.filter(function(x){ return x.id!=id; }); render();
+}
 function newDay() {
-  var c=notes.filter(function(n){return n.col==="imorgon";}).length;
+  var c=notes.filter(function(n){ return n.col==="imorgon"; }).length;
   if(c===0){alert("Inga lappar i I morgon!");return;}
   if(!confirm("Flytta "+c+" lapp(ar) till I dag?"))return;
-  notes.forEach(function(n){if(n.col==="imorgon")n.col="idag";}); render();
+  notes.forEach(function(n){ if(n.col==="imorgon") n.col="idag"; }); render();
 }
 function exportNotes() {
   var blob=new Blob([JSON.stringify(notes,null,2)],{type:"application/json"});
@@ -440,17 +357,19 @@ function exportNotes() {
   a.href=url; a.download="henrik-lappar.json"; a.click(); URL.revokeObjectURL(url);
 }
 function importNotes(e) {
-  var file=e.target.files[0]; if(!file)return;
+  var file=e.target.files[0]; if(!file) return;
   var reader=new FileReader();
   reader.onload=function(ev){
-    try{var d=JSON.parse(ev.target.result);if(!Array.isArray(d))throw new Error();
-    if(!confirm("Importera "+d.length+" lappar?"))return; notes=d; render();}
-    catch(err){alert("Ogiltig fil.");}
+    try{ var d=JSON.parse(ev.target.result); if(!Array.isArray(d)) throw 0;
+      if(!confirm("Importera "+d.length+" lappar?")) return;
+      notes=d; render();
+    } catch(err){ alert("Ogiltig fil."); }
     e.target.value="";
   };
   reader.readAsText(file);
 }
 
+// ── Modal ──────────────────────────────────────────────────────────────────
 function openModal() {
   editId=null;
   document.getElementById("modal-title").textContent="Ny lapp";
@@ -460,10 +379,10 @@ function openModal() {
   document.getElementById("is-done").checked=false;
   document.getElementById("is-white").checked=false;
   document.getElementById("overlay").classList.add("open");
-  setTimeout(function(){document.getElementById("note-text").focus();},100);
+  setTimeout(function(){ document.getElementById("note-text").focus(); },100);
 }
 function openEdit(id) {
-  var n=notes.find(function(x){return x.id===id;}); if(!n)return;
+  var n=notes.find(function(x){ return x.id==id; }); if(!n) return;
   editId=id;
   document.getElementById("modal-title").textContent="Redigera lapp";
   document.getElementById("note-text").value=n.text;
@@ -476,20 +395,19 @@ function openEdit(id) {
 function closeModal() { document.getElementById("overlay").classList.remove("open"); editId=null; }
 function saveModal() {
   var text=document.getElementById("note-text").value.trim();
-  if(!text){document.getElementById("note-text").focus();return;}
-  if(editId){
-    var n=notes.find(function(x){return x.id===editId;});
-    if(n){n.text=text;n.col=document.getElementById("col-sel").value;n.app=document.getElementById("is-app").checked;n.done=document.getElementById("is-done").checked;n.white=document.getElementById("is-white").checked;}
+  if(!text){ document.getElementById("note-text").focus(); return; }
+  if(editId) {
+    var n=notes.find(function(x){ return x.id==editId; });
+    if(n){ n.text=text; n.col=document.getElementById("col-sel").value; n.app=document.getElementById("is-app").checked; n.done=document.getElementById("is-done").checked; n.white=document.getElementById("is-white").checked; }
   } else {
-    notes.push({id:Date.now(),col:document.getElementById("col-sel").value,text:text,app:document.getElementById("is-app").checked,done:document.getElementById("is-done").checked,white:document.getElementById("is-white").checked});
+    notes.push({id:Date.now(), col:document.getElementById("col-sel").value, text:text, app:document.getElementById("is-app").checked, done:document.getElementById("is-done").checked, white:document.getElementById("is-white").checked});
   }
   render(); closeModal();
 }
-document.getElementById("overlay").onclick=function(e){if(e.target===this)closeModal();};
+document.getElementById("overlay").onclick=function(e){ if(e.target===this) closeModal(); };
 
-if (!loadFromHash() && !loadLocal()) {
-  notes = JSON.parse(JSON.stringify(INIT));
-}
+// ── Init ───────────────────────────────────────────────────────────────────
+if (!load()) { notes=JSON.parse(JSON.stringify(INIT)); }
 render();
 </script>
 </body>
