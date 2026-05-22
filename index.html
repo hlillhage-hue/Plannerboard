@@ -289,7 +289,10 @@ function addTouch(grip,id,card){
   grip.addEventListener('touchend',function(e){
     card.classList.remove('dragging');
     if(tmov&&tid!=null&&pendingCol!==null){
+      alert('Flyttar id='+tid+' till col='+pendingCol+' idx='+pendingIdx+' notes.length='+notes.length);
       moveNote(tid,pendingCol,pendingIdx);
+    } else {
+      alert('Ingen flytt: tmov='+tmov+' tid='+tid+' pendingCol='+pendingCol);
     }
     clearInds(); tid=null; tmov=false; dragId=null; pendingCol=null; pendingIdx=0;
   });
